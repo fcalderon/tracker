@@ -1,5 +1,5 @@
 export class User {
-    render() {
-        return (<div></div>)
-    }
+  render() {
+    return <div />;
+  }
 }
