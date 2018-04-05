@@ -44,8 +44,8 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :competitivetetris do
-  set version: current_version(:competitivetetris)
+release :tracker do
+  set version: current_version(:tracker)
   set applications: [
         :runtime_tools
       ]
