@@ -2,7 +2,7 @@
 
 export PORT=5110
 export MIX_ENV=prod
-export GIT_PATH=/home/tetris/src/tracker
+export GIT_PATH=/home/tracker/src/tracker
 
 PWD=`pwd`
 if [ $PWD != $GIT_PATH ]; then
@@ -11,8 +11,8 @@ if [ $PWD != $GIT_PATH ]; then
 	exit 1
 fi
 
-if [ $USER != "tetris" ]; then
-	echo "Error: must run as user 'tetris'"
+if [ $USER != "tracker" ]; then
+	echo "Error: must run as user 'tracker'"
 	echo "  Current user is $USER"
 	exit 2
 fi
@@ -37,7 +37,7 @@ REL_TAR=~/src/tracker/_build/prod/rel/tracker/releases/0.0.1/tracker.tar.gz
 (cd ~/www/tracker && tar xzvf $REL_TAR)
 
 crontab - <<CRONTAB
-@reboot bash /home/tetris/src/tracker/start.sh
+@reboot bash /home/tracker/src/tracker/start.sh
 CRONTAB
 
 #. start.sh
