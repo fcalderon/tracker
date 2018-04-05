@@ -6,35 +6,15 @@ import {TimeBlockForm} from "./time-blocks/time-block-form";
 import {TimeBlocksService} from "../../service/time-block.service";
 import {UserService} from "../../service/user.service";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {LoginActionTypes, TaskActionsTypes} from "../../../store";
 
-export class EditTaskPage extends React.Component {
-    constructor(props) {
-        super();
-        this.state = {loading: true};
 
-        TaskService.get(props.match.params.id)
-            .then((taskRes) => {
-                this.setState({ loading: false, task: taskRes.data, newTimeBlock: { start_time: '', end_time: '' }, time_blocksState : { loading: true } });
-                this.getUsers();
-
-                this.getTimeBlocks(taskRes.data.id);
-
-            })
-            .catch(error => {
-                console.log('Error getting task', error);
-            });
-
+class EditTaskPageComponent extends React.Component {
+    componentWillMount() {
+        TaskService.getById(this.props.match.params.id, true);
+        UserService.get();
     }
-
-    getUsers() {
-        UserService.get().then(data => {
-            this.setState(Object.assign({}, this.state, { users: data.data }));
-            console.log('Got users', this.state.users);
-        }).catch(error => {
-            console.error('Error getting users', error);
-        })
-    }
-
 
     render() {
         return (<div>
@@ -45,14 +25,14 @@ export class EditTaskPage extends React.Component {
                 </div>
             </div>
             {
-                this.state.loading
+                !this.props.task
                     ?
                     <div>Loading</div>
                     :
                     <div className={'row'}>
                         <div className={'col'}>
-                            <TaskForm model={Object.assign({}, this.state.task)}
-                                      users={this.state.users}
+                            <TaskForm model={Object.assign({}, this.props.task)}
+                                      users={this.props.users}
                                       onSubmit={(model) => { TaskService.put(model) }}
                                       onChange={(model) => { this.setState({task: model}) }} />
                         </div>
@@ -61,3 +41,13 @@ export class EditTaskPage extends React.Component {
         </div>)
     }
 }
+
+function state2props(state) {
+    console.log("rerender", state);
+    return {
+        task: state.tasks.taskForm,
+        users: state.users.users };
+}
+
+// Export the result of a curried function call.
+export const EditTaskPage = connect(state2props)(EditTaskPageComponent);

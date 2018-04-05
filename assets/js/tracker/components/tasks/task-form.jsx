@@ -2,9 +2,28 @@ import React from 'react';
 import {TaskService} from "../../service/task.service";
 import {UsersSelect} from "../users/users-select";
 import {Link} from "react-router-dom";
+import {TaskActionsTypes} from "../../../store";
+import {connect} from "react-redux";
 
 
-export const TaskForm = (props) => {
+export const TaskForm = connect(state => { return {users: state.users.users, form: state.tasks.taskForm }})((props) => {
+    function update(ev) {
+        let tgt = $(ev.target);
+        let data = {};
+        console.log(ev.target);
+        data[tgt.attr('name')] = tgt.val();
+        if (data[tgt.attr('name')] === 'on') {
+            data[tgt.attr('name')] = true;
+        } else if(data[tgt.attr('name')] === 'off') {
+            data[tgt.attr('name')] = false;
+        }
+        console.log(data);
+        props.dispatch({
+            type: TaskActionsTypes.UpdateForm,
+            payload: data,
+        })
+    }
+
     return (
         <form>
             <div className={'card'}>
@@ -17,8 +36,9 @@ export const TaskForm = (props) => {
                         <input type={'text'}
                                className={'form-control'} id="title-field"
                                disabled={props.readOnly}
-                               onChange={ (event) => { props.model.title = event.target.value; onChange(props) }}
-                               value={props.model.title}/>
+                               name={'title'}
+                               onChange={ update }
+                               value={props.form.title}/>
                     </div>
                     <div className={'form-group'}>
                         <label htmlFor="description-field">Description</label>
@@ -26,8 +46,9 @@ export const TaskForm = (props) => {
                                className={'form-control'}
                                id="description-field"
                                disabled={props.readOnly}
-                               onChange={ (event) => { props.model.description = event.target.value; onChange(props) }}
-                               value={props.model.description}/>
+                               name={'description'}
+                               onChange={ update }
+                               value={props.form.description}/>
                     </div>
                     <div>
                         {
@@ -36,7 +57,7 @@ export const TaskForm = (props) => {
                                 <UsersSelect users={ props.users }
                                              readOnly={props.readOnly}
                                              selectedUserId={props.model.assignee_id}
-                                             onSelected={ (user) => {props.model.assignee_id =  user.id; onChange(props)}}/>
+                                             onSelected={ (user) => {props.form.assignee_id =  user.id; onChange(props)}}/>
                                 :
                                 !!props.readOnly
 
@@ -47,7 +68,7 @@ export const TaskForm = (props) => {
                                                className={'form-control'}
                                                id="assignee-field"
                                                disabled={props.readOnly}
-                                               value={props.model.assignee.name}/>
+                                               value={props.form.assignee.name}/>
                                     </div>
                                     :
                                 <div className={'form-group'}>
@@ -56,8 +77,9 @@ export const TaskForm = (props) => {
                                            className={'form-control'}
                                            id="assignee-field"
                                            disabled={props.readOnly}
-                                           onChange={ (event) => { props.model.assignee_id = event.target.value; onChange(props) }}
-                                           value={props.model.assignee_id}/>
+                                           name={'assignee_id'}
+                                           onChange={ update }
+                                           value={props.form.assignee_id}/>
                                 </div>
                         }
                     </div>
@@ -73,13 +95,15 @@ export const TaskForm = (props) => {
                                            id="assignee-field"
                                            disabled={props.readOnly}
                                            step={15}
-                                           onChange={ (event) => { props.model.minutes_worked = event.target.value; onChange(props) }}
-                                           value={props.model.minutes_worked || 0}/>
+                                           onChange={ update }
+                                           name={'minutes_worked'}
+                                           value={props.form.minutes_worked || 0}/>
                                 </div>
                                 <div className={'form-check'}>
                                     <input type={'checkbox'} className={'form-check-input'} id="completed-check" disabled={props.readOnly}
-                                           onChange={ (event) => { props.model.completed = event.target.checked; onChange(props) }}
-                                           checked={props.model.completed}/>
+                                           onChange={ update }
+                                           name={'completed'}
+                                           checked={props.form.completed}/>
                                     <label htmlFor="completed-check" className={'form-check-label'}>Completed</label>
                                 </div>
                             </div>
@@ -90,9 +114,9 @@ export const TaskForm = (props) => {
                 </div>
                 <div className={'card-footer'}>
                     {
-                        props.readOnly && props.model.id
+                        props.readOnly && props.form.id
                             ?
-                            <Link to={'/tasks/edit/' + props.model.id } >Edit</Link>
+                            <Link to={'/tasks/edit/' + props.form.id } >Edit</Link>
                             :
                             <button type="button" className="btn btn-primary" onClick={ () => props.onSubmit(props.model)}>Submit</button>
                     }
@@ -100,12 +124,4 @@ export const TaskForm = (props) => {
             </div>
         </form>
     );
-};
-
-function onChange(props) {
-    console.log(props);
-
-    if (props.onChange) {
-        props.onChange(props.model)
-    }
-}
+});
