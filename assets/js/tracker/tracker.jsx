@@ -11,20 +11,12 @@ import Nav from './components/layout/nav';
 import { Login } from './components/users/login';
 import * as ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux';
-import { TaskForm } from './components/tasks/task-form';
-import { TaskService } from './service/task.service';
-import store, { TokenActionTypes } from '../store';
 
-let Tracker = connect(state => state)(props => {
+let Tracker = connect(state => state)(() => {
   function handleRouteChange(previousRoute, newRoute) {
     console.log('Paths', previousRoute, newRoute);
   }
 
-  function renderViewTasks(routeProps) {
-    console.log(routeProps);
-    // TaskService.get(routeProps.match.params.id);
-    return <ViewTaskPage />;
-  }
   return (
     <Router onChange={handleRouteChange}>
       <div>
