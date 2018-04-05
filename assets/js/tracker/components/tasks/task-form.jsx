@@ -52,14 +52,17 @@ export const TaskForm = connect(state => { return {users: state.users.users, for
                     </div>
                     <div>
                         {
-                            !!props.users
+                            !!props.users && !props.readOnly
                                 ?
                                 <UsersSelect users={ props.users }
                                              readOnly={props.readOnly}
-                                             selectedUserId={props.model.assignee_id}
-                                             onSelected={ (user) => {props.form.assignee_id =  user.id; onChange(props)}}/>
+                                             selectedUserId={props.form.assignee_id}
+                                             onSelected={ (user) => { props.dispatch({
+                                                 type: TaskActionsTypes.UpdateForm,
+                                                 payload: { assignee_id: user.id }
+                                             }) }}/>
                                 :
-                                !!props.readOnly
+                                props.readOnly && !!props.form.assignee
 
                                     ?
                                     <div className={'form-group'}>
@@ -85,7 +88,7 @@ export const TaskForm = connect(state => { return {users: state.users.users, for
                     </div>
 
                     {
-                        !!props.model.id
+                        !!props.form.id
                             ?
                             <div>
                                 <div className={'form-group'}>
@@ -118,7 +121,7 @@ export const TaskForm = connect(state => { return {users: state.users.users, for
                             ?
                             <Link to={'/tasks/edit/' + props.form.id } >Edit</Link>
                             :
-                            <button type="button" className="btn btn-primary" onClick={ () => props.onSubmit(props.model)}>Submit</button>
+                            <button type="button" className="btn btn-primary" onClick={ () => props.onSubmit(props.form)}>Submit</button>
                     }
                 </div>
             </div>

@@ -21,10 +21,19 @@ export const TaskActionsTypes = {
     Remove: '[Tasks] Remove',
     Update: '[Tasks] Update',
     Select: '[Tasks] Select Task',
-    UpdateForm: '[Tasks] UpdateForm'
+    UpdateForm: '[Tasks] UpdateForm',
+    ClearForm: '[Tasks] ClearForm'
 };
 
-function tasks(state = { tasks: [], taskForm: {} }, action) {
+const empty_task_form = {
+    title: '',
+    description: '',
+    assignee_id: -1,
+    time_worked: 0,
+    completed: false
+};
+
+function tasks(state = { tasks: [], taskForm: empty_task_form }, action) {
     switch (action.type) {
         case TaskActionsTypes.Add:
             return Object.assign({}, state, { tasks: [...state.tasks, action.payload ]});
@@ -34,6 +43,8 @@ function tasks(state = { tasks: [], taskForm: {} }, action) {
             return Object.assign({}, state, { task: action.payload });
         case TaskActionsTypes.UpdateForm:
             return Object.assign({}, state, { taskForm: Object.assign({}, state.taskForm, action.payload)});
+        case TaskActionsTypes.ClearForm:
+            return Object.assign({}, state, { taskForm: Object.assign({}, {})});
         case TaskActionsTypes.Remove:
         case TaskActionsTypes.Update:
         default:
@@ -73,7 +84,7 @@ function token(state = null, action) {
         case TokenActionTypes.SetToken:
             return Object.assign({}, { tokenWrapper: action.payload });
         case TokenActionTypes.RemoveToken:
-            return Object.assign({}, { tokenWrapper: undefined });
+            return null;
         default:
             return state;
     }

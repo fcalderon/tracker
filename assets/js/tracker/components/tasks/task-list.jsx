@@ -32,10 +32,9 @@ function renderTasks(tasks) {
 }
 
 function renderTask(task) {
-    return <Link key={task.id} to={'/tasks/' + task.id} className={'list-group-item list-group-item-action flex-column align-items-start'}>
+    return <Link key={task.id} to={'/tasks/view/' + task.id} className={'list-group-item list-group-item-action flex-column align-items-start'}>
         <div className="d-flex w-100 justify-content-between">
             <h5 className="mb-1">{task.title}</h5>
-            <small>3 days ago</small>
         </div>
         <p className="mb-1">{task.description}</p>
         <small>{task.assignee.name}</small>

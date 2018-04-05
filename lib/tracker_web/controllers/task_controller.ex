@@ -23,10 +23,11 @@ defmodule TrackerWeb.TaskController do
 
     if (Map.has_key?(Map.get(conn, :assigns), :authenticated_user_id)) do
       with {:ok, %Task{} = task} <- Tasks.create_task(task_params) do
+        createdTask = Tasks.get_task!(task.id)
         conn
         |> put_status(:created)
-        |> put_resp_header("location", task_path(conn, :show, task))
-        |> render("show.json", task: task)
+        |> put_resp_header("location", task_path(conn, :show, createdTask))
+        |> render("show.json", task: createdTask)
       end
     else
       conn

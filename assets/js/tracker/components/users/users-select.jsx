@@ -9,17 +9,17 @@ export const UsersSelect = (props) => {
                 disabled={props.readOnly}
                 onChange={ (event) => { console.log('Changed', event.target.value) ; props.onSelected(getUser(props.users, event.target.value)) }}
                 value={props.selectedUserId}>
-            {renderUsers(props.users)}
+            {renderUsers(props.users, props.selectedUserId)}
         </select>
     </div>);
 };
 
-function renderUsers(users) {
+function renderUsers(users, selectedUserId) {
     const options = [];
     if (users) {
         for(let i = 0; i < users.length ; i++) {
             const user = users[i];
-            options.push(<option key={user.id} value={user.id}>{user.name}</option>)
+            options.push(<option key={user.id} value={user.id} selected={user.id === selectedUserId}>{user.name}</option>)
         }
     }
     return options;

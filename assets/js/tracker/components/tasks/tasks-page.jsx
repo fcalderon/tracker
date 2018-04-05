@@ -3,33 +3,20 @@ import {TaskService} from "../../service/task.service";
 import {TaskList} from "./task-list";
 import {connect} from "react-redux";
 
-// export class TasksPage extends React.Component {
-//     constructor(props) {
-//         super();
-//         this.state = {tasks: []};
-//         TaskService
-//             .get()
-//             .then((res) => {
-//                 console.log('Tasks: ', res);
-//                 this.setState({ tasks: res.data })
-//             }, (error) => {
-//
-//             })
-//     }
-//     render() {
-//         return (<div>
-//             <div>
-//                 <TaskList tasks={this.state.tasks}/>
-//             </div>
-//         </div>);
-//     }
-// }
-export const TasksPage = connect((state) => state.tasks)((props) => {
-    TaskService.get();
-
-    return (<div>
-        <div>
-            <TaskList tasks={props.tasks}/>
-        </div>
-    </div>);
-});
+export class TasksPageComponent extends React.Component {
+    componentWillMount() {
+        if (!this.props.userLoggedIn) {
+            this.props.history.push('/login');
+        } else {
+            TaskService.get();
+        }
+    }
+    render() {
+        return (<div>
+            <div>
+                <TaskList tasks={this.props.tasks}/>
+            </div>
+        </div>);
+    }
+}
+export const TasksPage = connect((state) => { return {tasks: state.tasks.tasks, userLoggedIn: !!state.token}})(TasksPageComponent);

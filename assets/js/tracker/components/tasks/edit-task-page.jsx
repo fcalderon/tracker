@@ -1,13 +1,9 @@
 import React from 'react';
 import {TaskForm} from "./task-form";
 import {TaskService} from "../../service/task.service";
-import {CreateTimeBlock} from "./time-blocks/create-time-block";
-import {TimeBlockForm} from "./time-blocks/time-block-form";
-import {TimeBlocksService} from "../../service/time-block.service";
 import {UserService} from "../../service/user.service";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {LoginActionTypes, TaskActionsTypes} from "../../../store";
 
 
 class EditTaskPageComponent extends React.Component {
@@ -16,6 +12,11 @@ class EditTaskPageComponent extends React.Component {
         UserService.get();
     }
 
+    handleSubmit(model) {
+        TaskService.put(model).then(() => {
+            this.props.history.push('/tasks/view/' + model.id)
+        })
+    }
     render() {
         return (<div>
             <h1>Edit task page</h1>
@@ -33,8 +34,7 @@ class EditTaskPageComponent extends React.Component {
                         <div className={'col'}>
                             <TaskForm model={Object.assign({}, this.props.task)}
                                       users={this.props.users}
-                                      onSubmit={(model) => { TaskService.put(model) }}
-                                      onChange={(model) => { this.setState({task: model}) }} />
+                                      onSubmit={(model) => { this.handleSubmit(model) }}/>
                         </div>
                     </div>
             }

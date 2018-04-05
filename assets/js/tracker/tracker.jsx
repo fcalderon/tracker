@@ -1,6 +1,6 @@
 import React from 'react';
 import {UserService} from "./service/user.service";
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import {SignUpPage} from "./components/users/sign-up-page";
 import {CreateTaskPage} from "./components/tasks/create-task-page";
 
@@ -28,14 +28,17 @@ let Tracker = connect((state) => state)((props) => {
     }
     return <Router onChange={handleRouteChange}>
         <div>
-            <Nav />
-            <div className={'container'}>
+            <Nav/>
+            <div className={'container mt-4'}>
+                <Route path={'/'} exact={true} render={ () => {
+                    return (<h1>Welcome to tracker! Use the NavBar to <Link to={'/login'}>login</Link> or <Link to={'/signUp'}>Sign Up</Link>!</h1>)
+                }}/>
                 <Route path={'/signUp'} exact={true} render={() => <SignUpPage/>}/>
-                <Route path={'/tasks/new'} exact={true} render={() => <CreateTaskPage/>}/>
-                <Route path={'/tasks/:id'} exact={true} component={ViewTaskPage}/>
+                <Route path={'/tasks/new'} exact={true} render={(props) => <CreateTaskPage history={props.history}/>}/>
+                <Route path={'/tasks/view/:id'} exact={true} component={ViewTaskPage}/>
                 <Route path={'/tasks/edit/:id'} exact={true} component={EditTaskPage}/>
-                <Route path={'/tasks'} exact={true} render={() => <TasksPage/>}/>
-                <Route path={'/login'} exact={true} render={() => <Login />}/>
+                <Route path={'/tasks'} exact={true} render={(props) => <TasksPage history={props.history}/>}/>
+                <Route path={'/login'} exact={true} render={(props) => <Login history={props.history}/>}/>
             </div>
         </div>
     </Router>;

@@ -36,20 +36,26 @@ import {connect} from "react-redux";
 // }
 class ViewTaskPageComponent extends React.Component{
     componentWillMount() {
+
         console.log('Component will mount');
         const id = this.props.match.params.id;
         console.log(id);
-        TaskService.getById(id);
+        if (!this.props.userLoggedIn) {
+            this.props.history.push('/login')
+        } else {
+            TaskService.getById(id, true);
+        }
+
     }
     render() {
         return (<div>
             <h1>View task page</h1>
             {
-                !this.props.task
+                !this.props.tasks.taskForm
                     ?
                     <div>Loading</div>
                     :
-                    <TaskForm model={Object.assign({}, this.props.task)} readOnly={true} />
+                    <TaskForm model={Object.assign({}, this.props.tasks.taskForm)} readOnly={true} />
 
             }
 
@@ -57,4 +63,4 @@ class ViewTaskPageComponent extends React.Component{
     }
 
 }
-export const ViewTaskPage = connect((state) => state.tasks)(ViewTaskPageComponent);
+export const ViewTaskPage = connect((state) => {return { tasks: state.tasks, userLoggedIn: state.token}})(ViewTaskPageComponent);

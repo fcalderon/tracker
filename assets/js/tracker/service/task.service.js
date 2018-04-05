@@ -34,17 +34,21 @@ function getById(id, forForm = false) {
 }
 
 function post(task) {
-    return CRUD.post(taskPath, {task: task}, true)
-        .then(res => {
-            console.log('Got res', res);
-            store.dispatch({
-                type: TaskActionsTypes.Add,
-                payload: res.data
+    return new Promise((resolve, reject) => {
+        CRUD.post(taskPath, {task: task}, true)
+            .then(res => {
+                console.log('Got res', res);
+                store.dispatch({
+                    type: TaskActionsTypes.Add,
+                    payload: res.data
+                });
+                resolve(res.data);
             })
-        })
-        .catch(err => {
-            console.error('Error getting users', err)
-        });
+            .catch(err => {
+                console.error('Error getting users', err)
+                reject(err);
+            });
+    });
 }
 
 function put(task) {
