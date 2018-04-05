@@ -6,8 +6,15 @@ defmodule TrackerWeb.TimeBlockController do
 
   action_fallback TrackerWeb.FallbackController
 
-  def index(conn, _params) do
-    time_blocks = TimeBlocks.list_time_blocks()
+  def index(conn, params) do
+    IO.inspect(params)
+    task_id = params["taskId"]
+    time_blocks =
+    if (task_id != nil) do
+      TimeBlocks.list_time_blocks_by_task_id(task_id)
+    else
+      TimeBlocks.list_time_blocks()
+    end
     render(conn, "index.json", time_blocks: time_blocks)
   end
 

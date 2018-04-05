@@ -12,13 +12,9 @@
   </head>
 
   <body>
-    <div class="container">
-
-      <main role="main">
-        <div id="tracker"></div>
-      </main>
-
-    </div> <!-- /container -->
+   <main role="main">
+           <div id="tracker"></div>
+         </main>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

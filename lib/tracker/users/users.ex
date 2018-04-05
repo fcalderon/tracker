@@ -37,6 +37,10 @@ defmodule Tracker.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_by_username(username) do
+    Repo.get_by(User, username: username)
+  end
+
   @doc """
   Creates a user.
 
@@ -53,6 +57,14 @@ defmodule Tracker.Users do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def authenticate(username, password) do
+    user = get_by_username(username)
+    case Comeonin.Argon2.check_pass(user, password) do
+      {:ok, user} -> user
+      _else       -> nil
+    end
   end
 
   @doc """

@@ -18,7 +18,13 @@ defmodule Tracker.TimeBlocks do
 
   """
   def list_time_blocks do
+    IO.puts("No task id")
     Repo.all(TimeBlock)
+  end
+
+  def list_time_blocks_by_task_id(task_id) do
+    IO.puts("Got task id")
+    Repo.all(from t in TimeBlock, where: t.task_id == ^task_id)
   end
 
   @doc """

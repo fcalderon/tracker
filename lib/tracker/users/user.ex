@@ -9,6 +9,7 @@ defmodule Tracker.Users.User do
     field :username, :string
     field :manager_id, :id
     field :password, :string, virtual: true
+    has_many :tasks, Tracker.Tasks.Task, foreign_key: :assignee_id
     timestamps()
   end
 
@@ -19,7 +20,7 @@ defmodule Tracker.Users.User do
     |> validate_confirmation(:password)
     |> validate_password(:password)
     |> put_pass_hash()
-    |> validate_required([:name, :username])
+    |> validate_required([:name, :username, :password_hash])
     |> unique_constraint(:username)
   end
 

@@ -19,6 +19,7 @@ defmodule Tracker.Tasks do
   """
   def list_tasks do
     Repo.all(Task)
+    |> Repo.preload(:assignee)
   end
 
   @doc """
@@ -35,7 +36,7 @@ defmodule Tracker.Tasks do
       ** (Ecto.NoResultsError)
 
   """
-  def get_task!(id), do: Repo.get!(Task, id)
+  def get_task!(id), do: Repo.get!(Task, id) |> Repo.preload(:assignee)
 
   @doc """
   Creates a task.

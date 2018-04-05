@@ -32,14 +32,14 @@ config :tracker, TrackerWeb.Endpoint,
 
 # Watch static and templates for browser reloading.
 config :tracker, TrackerWeb.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
-      ~r{priv/gettext/.*(po)$},
-      ~r{lib/tracker_web/views/.*(ex)$},
-      ~r{lib/tracker_web/templates/.*(eex)$}
-    ]
-  ]
+       live_reload: [
+         patterns: [
+           ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+           ~r{priv/gettext/.*(po)$},
+           ~r{lib/tracker_web/views/.*(ex)$},
+           ~r{lib/tracker_web/templates/.*(eex)$}
+         ]
+       ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
@@ -56,3 +56,5 @@ config :tracker, Tracker.Repo,
   database: "tracker_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :tracker, app_salt: "rJBy!cqv+{qm*>D_]2!K%_BiZX,GqeOl"

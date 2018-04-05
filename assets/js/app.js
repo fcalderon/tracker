@@ -14,7 +14,7 @@
 import "phoenix_html"
 import ReactDOM from 'react-dom';
 import React from 'react';
-import {Tracker} from './tracker.component.jsx'
+import {Tracker} from './components/tracker.component.jsx'
 // Import local files
 //
 // Local files can be imported directly using relative

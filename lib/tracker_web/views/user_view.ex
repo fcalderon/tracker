@@ -13,7 +13,20 @@ defmodule TrackerWeb.UserView do
   def render("user.json", %{user: user}) do
     %{id: user.id,
       name: user.name,
-      username: user.username,
-      password: user.password}
+      username: user.username}
   end
+
+  def render("authentication.json", %{user: user, token: token}) do
+    %{
+      user: render("user.json",  user: user),
+      token: token
+    }
+  end
+
+
+  def render("error.json", %{message: message}) do
+    %{
+      error: message
+    }
+    end
 end
