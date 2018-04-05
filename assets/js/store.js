@@ -1,5 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import deepFreeze from 'deep-freeze';
+import {composeWithDevTools, devToolsEnhancer} from 'redux-devtools-extension';
 
 /*  TODO update state layout
  *  state layout:
@@ -96,6 +97,25 @@ function login(state = empty_login_form, action) {
     }
 }
 
+let empty_sign_up_form = {
+    username: '',
+    password: '',
+    name: ''
+};
+
+export const SignUpActionTypes = {
+    UpdateForm: '[SignUp] Update form'
+};
+
+function signUp(state = empty_sign_up_form, action) {
+    switch (action.type) {
+        case SignUpActionTypes.UpdateForm:
+            return Object.assign({}, state, action.payload);
+        default:
+            return state;
+    }
+}
+
 let empty_form = {
     user_id: "",
     body: "",
@@ -114,11 +134,11 @@ function root_reducer(state0, action) {
     console.log("reducer", action);
     // {tasks, users, form} is ES6 shorthand for
     // {tasks: tasks, users: users, form: form}
-    let reducer = combineReducers({tasks, users, token, form, login});
+    let reducer = combineReducers({tasks, users, token, form, login, signUp});
     let state1 = reducer(state0, action);
     console.log("state1", state1);
     return deepFreeze(state1);
 };
 
-let store = createStore(root_reducer);
+let store = createStore(root_reducer, {}, devToolsEnhancer());
 export default store;

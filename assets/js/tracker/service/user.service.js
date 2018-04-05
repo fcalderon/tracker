@@ -47,6 +47,8 @@ function post(user) {
 function authenticate(credentials) {
     return CRUD.post(userPath, {credentials: credentials})
         .then(res => {
+            console.log('AUTHENTICATING');
+            localStorage.setItem('__AUTH', JSON.stringify(res));
             store.dispatch({
                 type: TokenActionTypes.SetToken,
                 payload: res

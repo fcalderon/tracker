@@ -28,13 +28,13 @@ export const Login = connect(({login}) => {return {login}})((props) => {
     //
     function handleSubmit(ev) {
         console.log(props);
-        UserService.authenticate(props.login)
-            .then(authenticationResult => {
-                localStorage.setItem('__TOKEN', authenticationResult.token);
-                localStorage.setItem('__AUTH', JSON.stringify(authenticationResult))
-            }, error =>{
-
-            });
+        UserService.authenticate(props.login);
+            // .then(authenticationResult => {
+            //     localStorage.setItem('__TOKEN', authenticationResult.token);
+            //     localStorage.setItem('__AUTH', JSON.stringify(authenticationResult))
+            // }, error =>{
+            //
+            // });
     }
 
 

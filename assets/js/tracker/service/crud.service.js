@@ -1,4 +1,5 @@
 import {getAuth} from "./user.service";
+import store from '../../store';
 
 function get(url, secured) {
     let headers = setAuthToken({
@@ -141,9 +142,9 @@ function put(url, data, secured) {
 function setAuthToken(headers, secured) {
     if (secured) {
         if (secured) {
-            let auth = getAuth();
-            if (auth) {
-                return Object.assign({}, headers, {'authorization': 'Bearer ' + auth.token})
+            let auth = store.getState().token;
+            if (auth && auth.tokenWrapper && auth.tokenWrapper.token) {
+                return Object.assign({}, headers, {'authorization': 'Bearer ' + auth.tokenWrapper.token})
             }
         }
     }

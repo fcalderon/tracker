@@ -13,6 +13,7 @@ import * as ReactDOM from "react-dom";
 import {connect, Provider} from "react-redux";
 import {TaskForm} from "./components/tasks/task-form";
 import {TaskService} from "./service/task.service";
+import store, {TokenActionTypes} from "../store";
 
 
 let Tracker = connect((state) => state)((props) => {
@@ -41,6 +42,13 @@ let Tracker = connect((state) => state)((props) => {
 });
 
 export default function tracker_init(store) {
+    const auth = UserService.getAuth();
+    if (auth && auth.token) {
+        store.dispatch({
+            type: TokenActionTypes.SetToken,
+            payload: auth
+        })
+    }
     ReactDOM.render(
         <Provider store={store}>
             <Tracker />
