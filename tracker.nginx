@@ -1,0 +1,14 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name tasks3.calderoncs4550.com;
+
+	location / {
+		proxy_pass http://localhost:5110;
+		#try_files $uri $uri/ =404;
+                proxy_set_header Origin '';
+                proxy_set_header Upgrade $http_upgrade;
+                proxy_set_header Connection "upgrade";
+	}
+}
